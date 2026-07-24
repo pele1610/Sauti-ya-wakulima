@@ -11,3 +11,9 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
     role = db.Column(db.String, nullable=False)
+
+
+    profile = db.relationship("Profile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    listings = db.relationship("Listing", back_populates="farmer", cascade="all, delete-orphan")
+    orders = db.relationship("Order", back_populates="buyer", cascade="all, delete-orphan")
+
