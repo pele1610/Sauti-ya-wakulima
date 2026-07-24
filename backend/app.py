@@ -6,6 +6,7 @@ from config import Config
 
 db = SQLAlchemy()
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -17,19 +18,21 @@ def create_app():
 
     from flask_jwt_extended import JWTManager
     from flask_restful import Api
-    from resources.auth import Register, Login
+    from resources.auth import Register, Login, Protected
 
     JWTManager(app)
 
     api = Api(app)
     api.add_resource(Register, "/register")
     api.add_resource(Login, "/login")
+    api.add_resource(Protected, "/protected")
 
     @app.route("/")
     def index():
         return {"message": "Sauti ya Wakulima API is running"}
 
     return app
+
 
 if __name__ == "__main__":
     app = create_app()
