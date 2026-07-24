@@ -15,11 +15,15 @@ def create_app():
     Migrate(app, db)
     CORS(app)
 
+    from flask_jwt_extended import JWTManager
     from flask_restful import Api
-    from resources.auth import Register
+    from resources.auth import Register, Login
+
+    JWTManager(app)
 
     api = Api(app)
     api.add_resource(Register, "/register")
+    api.add_resource(Login, "/login")
 
     @app.route("/")
     def index():
