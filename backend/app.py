@@ -15,6 +15,12 @@ def create_app():
     Migrate(app, db)
     CORS(app)
 
+    from flask_restful import Api
+    from resources.auth import Register
+
+    api = Api(app)
+    api.add_resource(Register, "/register")
+
     @app.route("/")
     def index():
         return {"message": "Sauti ya Wakulima API is running"}
