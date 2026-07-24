@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 
 from app import db
 from models import User, Profile
@@ -36,3 +37,23 @@ class Register(Resource):
         db.session.commit()
 
         return user.to_dict(), 201
+
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+
+        email = data.get("email")
+        password = data.get("password")
+
+        if not email or not password:
+            return {"error": "email and password are required"}, 400
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user or not check_password_hash(user.password_hash, password):
+            return {"error": "invalid email or password"}, 401
+
+        access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role})
+
+        return {"access_token": access_token, "user": user.to_dict()}, 200
