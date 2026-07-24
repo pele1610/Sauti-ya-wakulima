@@ -40,3 +40,66 @@ with app.app_context():
         )
         db.session.add(profile)
         farmers.append(user)
+
+
+
+    print("Seeding buyers...")
+    buyers = []
+    for _ in range(8):
+        user = User(
+            email=fake.unique.email(),
+            password_hash=generate_password_hash("password123"),
+            role="buyer",
+        )
+        db.session.add(user)
+        db.session.flush()
+        profile = Profile(
+            user_id=user.id,
+            phone=fake.phone_number(),
+            location=fake.city(),
+            verification_status=random.choice(["pending", "verified"]),
+        )
+        db.session.add(profile)
+        buyers.append(user)
+
+    print("Seeding an admin...")
+    admin = User(
+        email="admin@sautiyawakulima.com",
+        password_hash=generate_password_hash("adminpass"),
+        role="admin",
+    )
+    db.session.add(admin)
+    db.session.flush()
+    db.session.add(Profile(user_id=admin.id, phone=fake.phone_number(), location=fake.city(), verification_status="verified"))
+
+    db.session.commit()
+
+    print("Seeding listings...")
+    listings = []
+    for _ in range(22):
+        listing = Listing(
+            farmer_id=random.choice(farmers).id,
+            variety=random.choice(VARIETIES),
+            tree_count=random.randint(10, 100),
+            status=random.choice(LISTING_STATUSES),
+        )
+        db.session.add(listing)
+        listings.append(listing)
+
+    db.session.commit()
+
+    print("Seeding orders...")
+    for _ in range(18):
+        listing = random.choice(listings)
+        order = Order(
+            buyer_id=random.choice(buyers).id,
+            listing_id=listing.id,
+            price_agreed=round(random.uniform(50, 500), 2),
+            harvest_date=fake.date_between(start_date="-30d", end_date="+30d"),
+            weight_recorded=round(random.uniform(20, 300), 2),
+            status=random.choice(ORDER_STATUSES),
+        )
+        db.session.add(order)
+
+    db.session.commit()
+    print("Seeding complete!")
