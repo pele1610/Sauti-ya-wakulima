@@ -31,29 +31,28 @@ class OrderListResource(Resource):
             "total_pages": pagination.pages,
         }, 200
 
-
-
-class OrderListResource(Resource):
     @jwt_required()
-    def get(self):
-        page = request.args.get("page", 1, type=int)
-        per_page = request.args.get("per_page", 10, type=int)
-
+    def post(self):
         claims = get_jwt()
-        user_id = get_jwt_identity()
+        if claims.get("role") != "buyer":
+            return {"error": "Only buyers can place orders"}, 403
 
-        query = Order.query
-        if claims.get("role") == "buyer":
-            query = query.filter_by(buyer_id=user_id)
-        elif claims.get("role") == "farmer":
-            query = query.join(Listing).filter(Listing.farmer_id == user_id)
+        data = request.get_json()
+        listing_id = data.get("listing_id")
 
-        pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+        listing = Listing.query.get(listing_id)
+        if not listing:
+            return {"error": "Listing not found"}, 404
 
-        return {
-            "orders": [order.to_dict() for order in pagination.items],
-            "total": pagination.total,
-            "page": pagination.page,
-            "per_page": pagination.per_page,
-            "total_pages": pagination.pages,
-        }, 200
+        order = Order(
+            buyer_id=get_jwt_identity(),
+            listing_id=listing_id,
+            price_agreed=data.get("price_agreed"),
+            harvest_date=data.get("harvest_date"),
+            weight_recorded=data.get("weight_recorded"),
+            status=data.get("status", "pending"),
+        )
+        db.session.add(order)
+        db.session.commit()
+
+        return order.to_dict(), 201
