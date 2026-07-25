@@ -14,6 +14,20 @@ class ListingsWithBuyerCount(Resource):
             .all()
         )
 
+class AvgTreeCountByVariety(Resource):
+    def get(self):
+        results = (
+            Listing.query
+            .with_entities(Listing.variety, func.avg(Listing.tree_count).label("avg_tree_count"))
+            .group_by(Listing.variety)
+            .all()
+        )
+
+        return [
+            {"variety": variety, "avg_tree_count": round(avg_tree_count, 2) if avg_tree_count else 0}
+            for variety, avg_tree_count in results
+        ], 200
+
         return [
             {
                 "listing_id": listing.id,
