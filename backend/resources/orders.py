@@ -30,7 +30,33 @@ class OrderListResource(Resource):
             "per_page": pagination.per_page,
             "total_pages": pagination.pages,
         }, 200
-    
+
+    @jwt_required()
+    def post(self):
+        claims = get_jwt()
+        if claims.get("role") != "buyer":
+            return {"error": "Only buyers can place orders"}, 403
+
+        data = request.get_json()
+        listing_id = data.get("listing_id")
+
+        listing = Listing.query.get(listing_id)
+        if not listing:
+            return {"error": "Listing not found"}, 404
+
+        order = Order(
+            buyer_id=get_jwt_identity(),
+            listing_id=listing_id,
+            price_agreed=data.get("price_agreed"),
+            harvest_date=data.get("harvest_date"),
+            weight_recorded=data.get("weight_recorded"),
+            status=data.get("status", "pending"),
+        )
+        db.session.add(order)
+        db.session.commit()
+
+        return order.to_dict(), 201
+
 
 class OrderResource(Resource):
     @jwt_required()
@@ -39,7 +65,6 @@ class OrderResource(Resource):
         if not order:
             return {"error": "Order not found"}, 404
         return order.to_dict(), 200
-
 
     @jwt_required()
     def put(self, order_id):
@@ -79,29 +104,3 @@ class OrderResource(Resource):
         db.session.delete(order)
         db.session.commit()
         return {}, 204
-
-    @jwt_required()
-    def post(self):
-        claims = get_jwt()
-        if claims.get("role") != "buyer":
-            return {"error": "Only buyers can place orders"}, 403
-
-        data = request.get_json()
-        listing_id = data.get("listing_id")
-
-        listing = Listing.query.get(listing_id)
-        if not listing:
-            return {"error": "Listing not found"}, 404
-
-        order = Order(
-            buyer_id=get_jwt_identity(),
-            listing_id=listing_id,
-            price_agreed=data.get("price_agreed"),
-            harvest_date=data.get("harvest_date"),
-            weight_recorded=data.get("weight_recorded"),
-            status=data.get("status", "pending"),
-        )
-        db.session.add(order)
-        db.session.commit()
-
-        return order.to_dict(), 201
