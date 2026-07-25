@@ -65,6 +65,22 @@ class OrderResource(Resource):
         return order.to_dict(), 200
 
     @jwt_required()
+    def delete(self, order_id):
+        order = Order.query.get(order_id)
+        if not order:
+            return {"error": "Order not found"}, 404
+
+        user_id = get_jwt_identity()
+        claims = get_jwt()
+
+        if str(order.buyer_id) != str(user_id) and claims.get("role") != "admin":
+            return {"error": "You can only delete your own orders"}, 403
+
+        db.session.delete(order)
+        db.session.commit()
+        return {}, 204
+
+    @jwt_required()
     def post(self):
         claims = get_jwt()
         if claims.get("role") != "buyer":
