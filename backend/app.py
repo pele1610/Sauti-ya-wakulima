@@ -19,6 +19,8 @@ def create_app():
     from flask_jwt_extended import JWTManager
     from flask_restful import Api
     from resources.auth import Register, Login, Protected, AdminOnly
+    from resources.listings import ListingListResource, ListingResource
+    from resources.orders import OrderListResource, OrderResource
 
     JWTManager(app)
 
@@ -27,9 +29,10 @@ def create_app():
     api.add_resource(Login, "/login")
     api.add_resource(Protected, "/protected")
     api.add_resource(AdminOnly, "/admin-only")
-    from resources.listings import ListingListResource, ListingResource
     api.add_resource(ListingListResource, "/listings")
     api.add_resource(ListingResource, "/listings/<int:listing_id>")
+    api.add_resource(OrderListResource, "/orders")
+    api.add_resource(OrderResource, "/orders/<int:order_id>")
 
     @app.route("/")
     def index():
