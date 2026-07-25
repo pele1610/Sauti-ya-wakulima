@@ -39,7 +39,30 @@ class OrderResource(Resource):
         if not order:
             return {"error": "Order not found"}, 404
         return order.to_dict(), 200
-    
+
+
+    @jwt_required()
+    def put(self, order_id):
+        order = Order.query.get(order_id)
+        if not order:
+            return {"error": "Order not found"}, 404
+
+        user_id = get_jwt_identity()
+        claims = get_jwt()
+
+        is_buyer_owner = str(order.buyer_id) == str(user_id)
+        is_farmer_owner = order.listing.farmer_id == int(user_id) if claims.get("role") == "farmer" else False
+
+        if not (is_buyer_owner or is_farmer_owner or claims.get("role") == "admin"):
+            return {"error": "You do not have permission to update this order"}, 403
+
+        data = request.get_json()
+        for field in ["price_agreed", "harvest_date", "weight_recorded", "status"]:
+            if field in data:
+                setattr(order, field, data[field])
+
+        db.session.commit()
+        return order.to_dict(), 200
 
     @jwt_required()
     def post(self):
