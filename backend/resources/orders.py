@@ -30,6 +30,16 @@ class OrderListResource(Resource):
             "per_page": pagination.per_page,
             "total_pages": pagination.pages,
         }, 200
+    
+
+class OrderResource(Resource):
+    @jwt_required()
+    def get(self, order_id):
+        order = Order.query.get(order_id)
+        if not order:
+            return {"error": "Order not found"}, 404
+        return order.to_dict(), 200
+    
 
     @jwt_required()
     def post(self):
