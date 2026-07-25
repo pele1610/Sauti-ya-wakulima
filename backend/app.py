@@ -27,6 +27,9 @@ def create_app():
     api.add_resource(Login, "/login")
     api.add_resource(Protected, "/protected")
     api.add_resource(AdminOnly, "/admin-only")
+    from resources.listings import ListingListResource, ListingResource
+    api.add_resource(ListingListResource, "/listings")
+    api.add_resource(ListingResource, "/listings/<int:listing_id>")
 
     @app.route("/")
     def index():
