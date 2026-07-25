@@ -40,3 +40,45 @@ class ListingListResource(Resource):
         db.session.commit()
 
         return listing.to_dict(), 201
+
+
+
+class ListingResource(Resource):
+    def get(self, listing_id):
+        listing = Listing.query.get(listing_id)
+        if not listing:
+            return {"error": "Listing not found"}, 404
+        return listing.to_dict(), 200
+
+    @jwt_required()
+    def put(self, listing_id):
+        listing = Listing.query.get(listing_id)
+        if not listing:
+            return {"error": "Listing not found"}, 404
+
+        user_id = get_jwt_identity()
+        if str(listing.farmer_id) != str(user_id):
+            return {"error": "You can only edit your own listings"}, 403
+
+        data = request.get_json()
+        for field in ["variety", "tree_count", "status"]:
+            if field in data:
+                setattr(listing, field, data[field])
+
+        db.session.commit()
+        return listing.to_dict(), 200
+
+    @jwt_required()
+    def delete(self, listing_id):
+        listing = Listing.query.get(listing_id)
+        if not listing:
+            return {"error": "Listing not found"}, 404
+
+        user_id = get_jwt_identity()
+        claims = get_jwt()
+        if str(listing.farmer_id) != str(user_id) and claims.get("role") != "admin":
+            return {"error": "You can only delete your own listings"}, 403
+
+        db.session.delete(listing)
+        db.session.commit()
+        return {}, 204
