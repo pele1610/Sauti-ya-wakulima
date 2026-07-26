@@ -147,6 +147,22 @@ function Home() {
         </div>
       </section>
 
+      <section className="bg-[#d9a441] px-8 py-10 text-center">
+        <h2 className="text-[#1c3d2e] text-xl font-bold mb-4">
+          Ready to sell at a fair price?
+        </h2>
+        <button className="bg-[#1c3d2e] text-white font-bold text-sm px-6 py-3">
+          List your first harvest
+        </button>
+      </section>
+
+      <footer className="bg-[#1c3d2e] px-8 py-6 flex justify-between items-center">
+        <span className="text-white font-bold text-sm">Sauti ya Wakulima</span>
+        <span className="text-gray-400 text-xs">
+          Built for farmers and buyers across Kenya. Avocado marketplace, V1.
+        </span>
+      </footer>
+
     </div>
   )
 }
