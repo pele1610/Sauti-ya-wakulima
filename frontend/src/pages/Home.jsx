@@ -37,6 +37,47 @@ function Home() {
           </button>
         </div>
       </section>
+
+      <section className="bg-[#f4efe6] px-8 py-16">
+        <h2 className="text-[#1c3d2e] text-2xl font-bold mb-1">
+          How it works
+        </h2>
+        <p className="text-gray-500 text-sm mb-8">
+          Three steps, from harvest to sale.
+        </p>
+
+        <div className="grid grid-cols-3 gap-8">
+          <div>
+            <p className="text-[#d9a441] font-bold text-xs mb-2">01</p>
+            <p className="text-[#1c3d2e] font-bold text-sm mb-1">
+              List your harvest
+            </p>
+            <p className="text-gray-500 text-xs">
+              Farmers post Hass or Fuerte listings with variety and tree count.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-[#d9a441] font-bold text-xs mb-2">02</p>
+            <p className="text-[#1c3d2e] font-bold text-sm mb-1">
+              Buyers place orders
+            </p>
+            <p className="text-gray-500 text-xs">
+              Buyers browse listings and order directly.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-[#d9a441] font-bold text-xs mb-2">03</p>
+            <p className="text-[#1c3d2e] font-bold text-sm mb-1">
+              Settle on harvest day
+            </p>
+            <p className="text-gray-500 text-xs">
+              Weight and price are recorded when the order completes.
+            </p>
+          </div>
+        </div>
+      </section> 
     </div>
   )
 }
