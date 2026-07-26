@@ -1,9 +1,7 @@
+import Home from './pages/Home'
+
 function App() {
-  return (
-    <div>
-      <h1>Sauti ya Wakulima</h1>
-    </div>
-  )
+  return <Home />
 }
 
 export default App
