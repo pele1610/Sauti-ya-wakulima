@@ -112,6 +112,40 @@ function Home() {
           </div>
         </div>
       </section>
+      <section className="bg-[#f4efe6] px-8 py-16">
+        <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
+          Farms harvesting now
+        </h2>
+
+        <div className="grid grid-cols-3 gap-6">
+          <div className="bg-white">
+            <div className="bg-[#2d6a4f] h-32"></div>
+            <div className="p-4">
+              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 84 trees</p>
+              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
+              <p className="text-[#1c3d2e] font-bold text-sm">KES 38 / kg</p>
+            </div>
+          </div>
+
+          <div className="bg-white">
+            <div className="bg-[#2d6a4f] h-32"></div>
+            <div className="p-4">
+              <p className="text-[#1c3d2e] font-bold text-sm">Fuerte &middot; 52 trees</p>
+              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
+              <p className="text-[#1c3d2e] font-bold text-sm">KES 31 / kg</p>
+            </div>
+          </div>
+
+          <div className="bg-white">
+            <div className="bg-[#2d6a4f] h-32"></div>
+            <div className="p-4">
+              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 120 trees</p>
+              <p className="text-gray-500 text-xs mb-2">Bomet County</p>
+              <p className="text-[#1c3d2e] font-bold text-sm">KES 40 / kg</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
     </div>
   )
