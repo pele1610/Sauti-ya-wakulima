@@ -21,6 +21,7 @@ def create_app():
     from resources.auth import Register, Login, Protected, AdminOnly
     from resources.listings import ListingListResource, ListingResource
     from resources.orders import OrderListResource, OrderResource
+    from resources.analytics import ListingsWithBuyerCount, AvgTreeCountByVariety, OrdersByStatusWithFarmer
 
     JWTManager(app)
 
@@ -33,6 +34,9 @@ def create_app():
     api.add_resource(ListingResource, "/listings/<int:listing_id>")
     api.add_resource(OrderListResource, "/orders")
     api.add_resource(OrderResource, "/orders/<int:order_id>")
+    api.add_resource(ListingsWithBuyerCount, "/analytics/listings-buyer-count")
+    api.add_resource(AvgTreeCountByVariety, "/analytics/avg-tree-count-by-variety")
+    api.add_resource(OrdersByStatusWithFarmer, "/analytics/orders-by-status")
 
     @app.route("/")
     def index():
