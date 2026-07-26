@@ -78,6 +78,41 @@ function Home() {
           </div>
         </div>
       </section> 
+      <section className="bg-[#ece4d3] px-8 py-16">
+        <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
+          Built for how harvest actually works
+        </h2>
+
+        <div className="grid grid-cols-3 gap-6">
+          <div className="bg-white p-6">
+            <p className="text-[#1c3d2e] font-bold text-sm mb-2">
+              Real listings, not guesswork
+            </p>
+            <p className="text-gray-500 text-xs">
+              Farmers post tree count and variety, so buyers know exactly what's available.
+            </p>
+          </div>
+
+          <div className="bg-white p-6">
+            <p className="text-[#1c3d2e] font-bold text-sm mb-2">
+              Transparent orders
+            </p>
+            <p className="text-gray-500 text-xs">
+              Price, harvest date, and weight are recorded on every order.
+            </p>
+          </div>
+
+          <div className="bg-white p-6">
+            <p className="text-[#1c3d2e] font-bold text-sm mb-2">
+              Direct to buyers
+            </p>
+            <p className="text-gray-500 text-xs">
+              No middlemen between the farm and the sale.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }
