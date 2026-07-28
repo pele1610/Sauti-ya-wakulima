@@ -8,7 +8,7 @@ from models import User, Profile, Listing, Order
 
 fake = Faker()
 app = create_app()
-
+# my seed file
 VARIETIES = ["Hass", "Fuerte"]
 LISTING_STATUSES = ["available", "sold_out"]
 ORDER_STATUSES = ["pending", "confirmed", "completed"]
