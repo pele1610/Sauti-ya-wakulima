@@ -15,13 +15,12 @@ def create_app():
     from models import User, Profile, Listing, Order
     Migrate(app, db)
     CORS(app)
-
+    from controllers.auth import Register, Login, Protected, AdminOnly
+    from controllers.listings import ListingListResource, ListingResource
+    from controllers.orders import OrderListResource, OrderResource
+    from controllers.analytics import ListingsWithBuyerCount, AvgTreeCountByVariety, OrdersByStatusWithFarmer
     from flask_jwt_extended import JWTManager
     from flask_restful import Api
-    from resources.auth import Register, Login, Protected, AdminOnly
-    from resources.listings import ListingListResource, ListingResource
-    from resources.orders import OrderListResource, OrderResource
-    from resources.analytics import ListingsWithBuyerCount, AvgTreeCountByVariety, OrdersByStatusWithFarmer
 
     JWTManager(app)
 
