@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
+from flask_marshmallow import Marshmallow
+
+ma = Marshmallow()
 
 db = SQLAlchemy()
 
@@ -12,15 +15,17 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+    ma.init_app(app)
     from models import User, Profile, Listing, Order
     Migrate(app, db)
     CORS(app)
+
+    from flask_jwt_extended import JWTManager
+    from flask_restful import Api
     from controllers.auth import Register, Login, Protected, AdminOnly
     from controllers.listings import ListingListResource, ListingResource
     from controllers.orders import OrderListResource, OrderResource
     from controllers.analytics import ListingsWithBuyerCount, AvgTreeCountByVariety, OrdersByStatusWithFarmer
-    from flask_jwt_extended import JWTManager
-    from flask_restful import Api
 
     JWTManager(app)
 
