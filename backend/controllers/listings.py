@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from schemas.listing_schema import listing_schema, listings_schema
 
 from app import db
 from models import Listing
@@ -14,7 +15,7 @@ class ListingListResource(Resource):
         pagination = Listing.query.paginate(page=page, per_page=per_page, error_out=False)
 
         return {
-            "listings": [listing.to_dict() for listing in pagination.items],
+            "listings": listings_schema.dump(pagination.items),
             "total": pagination.total,
             "page": pagination.page,
             "per_page": pagination.per_page,
@@ -39,7 +40,7 @@ class ListingListResource(Resource):
         db.session.add(listing)
         db.session.commit()
 
-        return listing.to_dict(), 201
+        return listing_schema.dump(listing), 201
 
 
 
@@ -48,7 +49,7 @@ class ListingResource(Resource):
         listing = Listing.query.get(listing_id)
         if not listing:
             return {"error": "Listing not found"}, 404
-        return listing.to_dict(), 200
+        return listing_schema.dump(listing), 200
 
     @jwt_required()
     def put(self, listing_id):
@@ -66,7 +67,7 @@ class ListingResource(Resource):
                 setattr(listing, field, data[field])
 
         db.session.commit()
-        return listing.to_dict(), 200
+        return listing_schema.dump(listing), 200
 
     @jwt_required()
     def delete(self, listing_id):

@@ -3,7 +3,7 @@ from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity, get_jwt,verify_jwt_in_request
-
+from schemas.user_schema import user_schema
 
 
 from app import db
@@ -51,7 +51,7 @@ class Register(Resource):
         db.session.add(profile)
         db.session.commit()
 
-        return user.to_dict(), 201
+        return user_schema.dump(user), 201
 
 
 class Login(Resource):
@@ -71,7 +71,7 @@ class Login(Resource):
 
         access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role})
 
-        return {"access_token": access_token, "user": user.to_dict()}, 200
+        return {"access_token": access_token, "user": user_schema.dump(user)}, 200
 
 class Protected(Resource):
     @jwt_required()

@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from schemas.order_schema import order_schema, orders_schema
 
 from app import db
 from models import Order, Listing
@@ -24,7 +25,7 @@ class OrderListResource(Resource):
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
         return {
-            "orders": [order.to_dict() for order in pagination.items],
+            "orders": orders_schema.dump(pagination.items),
             "total": pagination.total,
             "page": pagination.page,
             "per_page": pagination.per_page,
@@ -55,7 +56,7 @@ class OrderListResource(Resource):
         db.session.add(order)
         db.session.commit()
 
-        return order.to_dict(), 201
+        return order_schema.dump(order), 201
 
 
 class OrderResource(Resource):
@@ -64,7 +65,7 @@ class OrderResource(Resource):
         order = Order.query.get(order_id)
         if not order:
             return {"error": "Order not found"}, 404
-        return order.to_dict(), 200
+        return order_schema.dump(order), 200
 
     @jwt_required()
     def put(self, order_id):
@@ -87,7 +88,7 @@ class OrderResource(Resource):
                 setattr(order, field, data[field])
 
         db.session.commit()
-        return order.to_dict(), 200
+        return order_schema.dump(order), 200
 
     @jwt_required()
     def delete(self, order_id):
