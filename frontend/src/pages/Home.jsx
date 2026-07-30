@@ -1,22 +1,10 @@
+import Navbar from '../components/layout/Navbar'
+import { Link } from 'react-router-dom'
+
 function Home() {
   return (
     <div>
-      <nav className="bg-[#1c3d2e] px-8 py-5 flex justify-between items-center">
-        <span className="text-white font-bold text-lg">Sauti ya Wakulima</span>
-        <div className="flex gap-6 text-sm text-gray-200">
-          <span>How it works</span>
-          <span>Marketplace</span>
-          <span>About</span>
-        </div>
-        <div className="flex gap-3">
-          <button className="border border-gray-300 text-white text-sm px-4 py-2">
-            Log in
-          </button>
-          <button className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-4 py-2">
-            List your harvest
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       <section className="bg-[#1c3d2e] px-8 py-16">
         <p className="text-[#d9a441] text-xs tracking-widest mb-3">
@@ -29,12 +17,12 @@ function Home() {
           Sauti ya Wakulima connects avocado farmers directly with buyers — real listings, transparent orders, no middlemen.
         </p>
         <div className="flex gap-3">
-          <button className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-5 py-3">
+          <Link to="/register" className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-5 py-3">
             I'm a Farmer
-          </button>
-          <button className="border border-gray-300 text-white text-sm px-5 py-3">
+          </Link>
+          <Link to="/register" className="border border-gray-300 text-white text-sm px-5 py-3">
             I'm a Buyer
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -77,7 +65,8 @@ function Home() {
             </p>
           </div>
         </div>
-      </section> 
+      </section>
+
       <section className="bg-[#ece4d3] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
           Built for how harvest actually works
@@ -112,6 +101,7 @@ function Home() {
           </div>
         </div>
       </section>
+
       <section className="bg-[#f4efe6] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
           Farms harvesting now
@@ -151,9 +141,9 @@ function Home() {
         <h2 className="text-[#1c3d2e] text-xl font-bold mb-4">
           Ready to sell at a fair price?
         </h2>
-        <button className="bg-[#1c3d2e] text-white font-bold text-sm px-6 py-3">
+        <Link to="/register" className="bg-[#1c3d2e] text-white font-bold text-sm px-6 py-3">
           List your first harvest
-        </button>
+        </Link>
       </section>
 
       <footer className="bg-[#1c3d2e] px-8 py-6 flex justify-between items-center">
