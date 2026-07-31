@@ -3,6 +3,7 @@ import Navbar from '../components/layout/Navbar'
 import ListingCard from '../components/listings/ListingCard'
 import { getListings } from '../api/listings'
 import Pagination from '../components/ui/Pagination'
+import Footer from '../components/layout/Footer'
 
 function Marketplace() {
   const [listings, setListings] = useState([])
@@ -53,6 +54,7 @@ function Marketplace() {
           </>
         )}
       </div>
+      <Footer />
     </div>
   )
 }

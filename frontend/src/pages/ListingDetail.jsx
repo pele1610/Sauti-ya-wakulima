@@ -5,6 +5,7 @@ import Badge from '../components/ui/Badge'
 import { getListing } from '../api/listings'
 import { createOrder } from '../api/orders'
 import { useAuth } from '../context/AuthContext'
+import Footer from '../components/layout/Footer'
 
 function ListingDetail() {
   const { id } = useParams()
@@ -151,6 +152,7 @@ function ListingDetail() {
           </>
         )}
       </div>
+        <Footer />
     </div>
   )
 }
