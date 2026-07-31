@@ -20,6 +20,9 @@ function Navbar() {
                 My Listings
               </Link>
             )}
+            <Link to="/orders" className="text-white text-sm underline">
+              Orders
+            </Link>
             <span className="text-white text-sm">{user.email}</span>
             <button onClick={logout} className="border border-gray-300 text-white text-sm px-4 py-2">
               Log out
