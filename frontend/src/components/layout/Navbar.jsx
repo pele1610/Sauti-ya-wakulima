@@ -23,6 +23,11 @@ function Navbar() {
             <Link to="/orders" className="text-white text-sm underline">
               Orders
             </Link>
+            {user.role === 'admin' && (
+  <Link to="/admin" className="text-white text-sm underline">
+    Admin
+  </Link>
+)}
             <span className="text-white text-sm">{user.email}</span>
             <button onClick={logout} className="border border-gray-300 text-white text-sm px-4 py-2">
               Log out
