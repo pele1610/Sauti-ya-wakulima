@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Marketplace from './pages/Marketplace'
 import ListingDetail from './pages/ListingDetail'
 import FarmerDashboard from './pages/FarmerDashboard'
+import Orders from './pages/Orders'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/listings/:id" element={<ListingDetail />} />
           <Route path="/dashboard" element={<ProtectedRoute><FarmerDashboard /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
           <Route
             path="/protected-test"
             element={
