@@ -12,9 +12,14 @@ function Navbar() {
         <Link to="/marketplace">Marketplace</Link>
         <span>About</span>
       </div>
-      <div className="flex gap-3 items-center">
+     <div className="flex gap-3 items-center">
         {isAuthenticated ? (
           <>
+            {user.role === 'farmer' && (
+              <Link to="/dashboard" className="text-white text-sm underline">
+                My Listings
+              </Link>
+            )}
             <span className="text-white text-sm">{user.email}</span>
             <button onClick={logout} className="border border-gray-300 text-white text-sm px-4 py-2">
               Log out

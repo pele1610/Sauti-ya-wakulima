@@ -1,5 +1,6 @@
 import Navbar from '../components/layout/Navbar'
 import { Link } from 'react-router-dom'
+import Footer from '../components/layout/Footer'
 
 function Home() {
   return (
@@ -146,12 +147,7 @@ function Home() {
         </Link>
       </section>
 
-      <footer className="bg-[#1c3d2e] px-8 py-6 flex justify-between items-center">
-        <span className="text-white font-bold text-sm">Sauti ya Wakulima</span>
-        <span className="text-gray-400 text-xs">
-          Built for farmers and buyers across Kenya. Avocado marketplace, V1.
-        </span>
-      </footer>
+      <Footer />
 
     </div>
   )

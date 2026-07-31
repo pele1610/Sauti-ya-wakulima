@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Marketplace from './pages/Marketplace'
+import ListingDetail from './pages/ListingDetail'
+import FarmerDashboard from './pages/FarmerDashboard'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/listings/:id" element={<ListingDetail />} />
+          <Route path="/dashboard" element={<ProtectedRoute><FarmerDashboard /></ProtectedRoute>} />
           <Route
             path="/protected-test"
             element={
