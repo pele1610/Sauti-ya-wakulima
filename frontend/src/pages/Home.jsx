@@ -1,8 +1,36 @@
 import Navbar from '../components/layout/Navbar'
 import { Link } from 'react-router-dom'
 import Footer from '../components/layout/Footer'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { getListings } from '../api/listings'
+import ListingCard from '../components/listings/ListingCard'
 
 function Home() {
+  const location = useLocation()
+  const [recentListings, setRecentListings] = useState([])
+
+  useEffect(() => {
+    async function fetchRecent() {
+      try {
+        const data = await getListings(1, 3)
+        setRecentListings(data.listings)
+      } catch (err) {
+        // fail silently on the homepage, not critical
+      }
+    }
+    fetchRecent()
+  }, [])
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.slice(1))
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [location])
+
   return (
     <div>
       <Navbar />
@@ -27,7 +55,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f4efe6] px-8 py-16">
+      <section id="how-it-works" className="bg-[#f4efe6] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-1">
           How it works
         </h2>
@@ -68,7 +96,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#ece4d3] px-8 py-16">
+      <section id="about" className="bg-[#ece4d3] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
           Built for how harvest actually works
         </h2>
@@ -103,38 +131,15 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f4efe6] px-8 py-16">
+     <section className="bg-[#f4efe6] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
           Farms harvesting now
         </h2>
 
         <div className="grid grid-cols-3 gap-6">
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 84 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 38 / kg</p>
-            </div>
-          </div>
-
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Fuerte &middot; 52 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 31 / kg</p>
-            </div>
-          </div>
-
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 120 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Bomet County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 40 / kg</p>
-            </div>
-          </div>
+          {recentListings.map((listing) => (
+            <ListingCard key={listing.id} listing={listing} />
+          ))}
         </div>
       </section>
 
