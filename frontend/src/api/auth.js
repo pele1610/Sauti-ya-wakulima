@@ -1,15 +1,15 @@
 import apiClient from './client'
 
-export function register({ email, password, role }) {
-    return apiClient('/register', {
+export function login(credentials) {
+    return apiClient('/login', {
         method: 'POST',
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify(credentials),
     })
 }
 
-export function login({ email, password }) {
-    return apiClient('/login', {
+export function register(details) {
+    return apiClient('/register', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(details),
     })
 }
