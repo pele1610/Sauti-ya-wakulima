@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/layout/Navbar'
 import ListingCard from '../components/listings/ListingCard'
 import { getListings } from '../api/listings'
+import Pagination from '../components/ui/Pagination'
 
 function Marketplace() {
   const [listings, setListings] = useState([])
@@ -48,25 +49,7 @@ function Marketplace() {
               ))}
             </div>
 
-            <div className="flex justify-center gap-4 text-sm">
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="px-3 py-1 border disabled:opacity-40"
-              >
-                Prev
-              </button>
-              <span className="text-gray-600">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
-                className="px-3 py-1 border disabled:opacity-40"
-              >
-                Next
-              </button>
-            </div>
+           <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
           </>
         )}
       </div>
