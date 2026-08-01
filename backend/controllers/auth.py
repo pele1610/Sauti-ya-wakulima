@@ -1,13 +1,14 @@
 from flask_restful import Resource
 from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from functools import wraps
-from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity, get_jwt,verify_jwt_in_request
-from schemas.user_schema import user_schema
-
+from flask_jwt_extended import verify_jwt_in_request
 
 from app import db
 from models import User, Profile
+from schemas.user_schema import user_schema
+
 
 def role_required(required_role):
     def decorator(fn):
@@ -26,12 +27,13 @@ class Register(Resource):
     def post(self):
         data = request.get_json()
 
+        name = data.get("name")
         email = data.get("email")
         password = data.get("password")
         role = data.get("role")
 
-        if not email or not password or not role:
-            return {"error": "email, password, and role are required"}, 400
+        if not name or not email or not password or not role:
+            return {"error": "name, email, password, and role are required"}, 400
 
         if role not in ["farmer", "buyer", "admin"]:
             return {"error": "role must be farmer, buyer, or admin"}, 400
@@ -40,6 +42,7 @@ class Register(Resource):
             return {"error": "email already registered"}, 400
 
         user = User(
+            name=name,
             email=email,
             password_hash=generate_password_hash(password),
             role=role,
@@ -72,6 +75,7 @@ class Login(Resource):
         access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role})
 
         return {"access_token": access_token, "user": user_schema.dump(user)}, 200
+
 
 class Protected(Resource):
     @jwt_required()

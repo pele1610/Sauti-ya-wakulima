@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { register } from '../api/auth'
 
 function Register() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('buyer')
@@ -15,7 +16,7 @@ function Register() {
     setError('')
     setLoading(true)
     try {
-      await register({ email, password, role })
+      await register({ name, email, password, role })
       navigate('/login')
     } catch (err) {
       setError(err.message)
@@ -28,6 +29,16 @@ function Register() {
     <div className="max-w-sm mx-auto mt-16 p-6">
       <h1 className="text-2xl font-bold mb-6">Create an account</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <input
