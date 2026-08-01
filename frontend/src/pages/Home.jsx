@@ -40,7 +40,7 @@ function Home() {
           AVOCADO MARKETPLACE &middot; KENYA
         </p>
         <h1 className="text-white text-4xl font-bold mb-4 max-w-xl">
-          Every harvest deserves a fair price.
+          Every farmer deserves a fair price.
         </h1>
         <p className="text-gray-300 text-sm mb-6 max-w-md">
           Sauti ya Wakulima connects avocado farmers directly with buyers — real listings, transparent orders, no middlemen.
