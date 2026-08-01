@@ -11,6 +11,10 @@ function ListingCard({ listing }) {
         <p className="text-[#1c3d2e] font-bold text-sm">
           {listing.variety} &middot; {listing.tree_count} trees
         </p>
+        <p className="text-gray-500 text-xs mt-1">
+          {listing.farmer_name || 'Unknown farmer'}
+          {listing.farmer_location && ` · ${listing.farmer_location}`}
+        </p>
         <div className="mt-2">
           <Badge variant={statusVariant}>{listing.status}</Badge>
         </div>

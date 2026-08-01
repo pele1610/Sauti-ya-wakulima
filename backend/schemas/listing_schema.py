@@ -11,6 +11,14 @@ class ListingSchema(ma.SQLAlchemySchema):
     variety = ma.auto_field()
     tree_count = ma.auto_field()
     status = ma.auto_field()
+    farmer_name = ma.Method("get_farmer_name")
+    farmer_location = ma.Method("get_farmer_location")
+
+    def get_farmer_name(self, obj):
+        return obj.farmer.name if obj.farmer else None
+
+    def get_farmer_location(self, obj):
+        return obj.farmer.profile.location if obj.farmer and obj.farmer.profile else None
 
 
 listing_schema = ListingSchema()
