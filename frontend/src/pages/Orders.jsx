@@ -5,6 +5,7 @@ import Badge from '../components/ui/Badge'
 import Pagination from '../components/ui/Pagination'
 import { getOrders } from '../api/orders'
 import { useAuth } from '../context/AuthContext'
+import { updateOrder } from '../api/orders'
 
 const statusVariant = {
   pending: 'warning',
@@ -19,6 +20,17 @@ function Orders() {
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+
+  async function handleStatusChange(orderId, newStatus) {
+    try {
+      await updateOrder(orderId, { status: newStatus })
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+      )
+    } catch (err) {
+      setError(err.message)
+    }
+  }
 
   useEffect(() => {
     async function fetchOrders() {
@@ -67,15 +79,27 @@ function Orders() {
                 >
                   <div>
                     <p className="font-bold text-sm text-[#1c3d2e]">
-                      {order.listing?.variety} &middot; {order.weight_recorded} kg
+                      {order.listing?.variety} ({order.weight_recorded} kg)
                     </p>
                     <p className="text-gray-500 text-xs">
-                      KES {order.price_agreed} &middot; Harvest {order.harvest_date}
+                      KES {order.price_agreed} &nbsp;|&nbsp; Harvest: {order.harvest_date}
                     </p>
                   </div>
-                  <Badge variant={statusVariant[order.status] || 'default'}>
-                    {order.status}
-                  </Badge>
+                  {user.role === 'farmer' ? (
+                    <select
+                      value={order.status}
+                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                      className="text-xs border rounded px-2 py-1"
+                    >
+                      <option value="pending">pending</option>
+                      <option value="confirmed">confirmed</option>
+                      <option value="completed">completed</option>
+                    </select>
+                  ) : (
+                    <Badge variant={statusVariant[order.status] || 'default'}>
+                      {order.status}
+                    </Badge>
+                  )}
                 </div>
               ))}
             </div>

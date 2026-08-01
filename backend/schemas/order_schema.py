@@ -1,5 +1,6 @@
 from app import ma
 from models.order import Order
+from schemas.listing_schema import ListingSchema
 
 
 class OrderSchema(ma.SQLAlchemySchema):
@@ -13,6 +14,7 @@ class OrderSchema(ma.SQLAlchemySchema):
     harvest_date = ma.auto_field()
     weight_recorded = ma.auto_field()
     status = ma.auto_field()
+    listing = ma.Nested(ListingSchema)
 
 
 order_schema = OrderSchema()
