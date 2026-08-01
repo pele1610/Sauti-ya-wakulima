@@ -8,9 +8,9 @@ function Navbar() {
     <nav className="bg-[#1c3d2e] px-8 py-5 flex justify-between items-center">
       <Link to="/" className="text-white font-bold text-lg">Sauti ya Wakulima</Link>
       <div className="flex gap-6 text-sm text-gray-200">
-        <span>How it works</span>
+        <Link to="/#how-it-works">How it works</Link>
         <Link to="/marketplace">Marketplace</Link>
-        <span>About</span>
+        <Link to="/#about">About</Link>
       </div>
      <div className="flex gap-3 items-center">
         {isAuthenticated ? (

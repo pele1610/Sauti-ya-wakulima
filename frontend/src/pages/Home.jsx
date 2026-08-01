@@ -1,8 +1,36 @@
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
-import { Link } from 'react-router-dom'
 import Footer from '../components/layout/Footer'
+import ListingCard from '../components/listings/ListingCard'
+import { getListings } from '../api/listings'
+import { useAuth } from '../context/AuthContext'
 
 function Home() {
+  const location = useLocation()
+  const { isAuthenticated } = useAuth()
+  const [recentListings, setRecentListings] = useState([])
+
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.getElementById(location.hash.replace('#', ''))
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [location])
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+    async function fetchRecent() {
+      try {
+        const data = await getListings(1, 20)
+        setRecentListings(data.listings)
+      } catch (err) {
+        // fail silently on the homepage, not critical
+      }
+    }
+    fetchRecent()
+  }, [isAuthenticated])
+
   return (
     <div>
       <Navbar />
@@ -27,7 +55,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f4efe6] px-8 py-16">
+      <section id="how-it-works" className="bg-[#f4efe6] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-1">
           How it works
         </h2>
@@ -68,7 +96,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#ece4d3] px-8 py-16">
+      <section id="about" className="bg-[#ece4d3] px-8 py-16">
         <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
           Built for how harvest actually works
         </h2>
@@ -103,40 +131,21 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f4efe6] px-8 py-16">
-        <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
-          Farms harvesting now
-        </h2>
+      {isAuthenticated && (
+        <section className="bg-[#f4efe6] px-8 py-16">
+          <h2 className="text-[#1c3d2e] text-2xl font-bold mb-8">
+            Farms harvesting now
+          </h2>
 
-        <div className="grid grid-cols-3 gap-6">
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 84 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 38 / kg</p>
-            </div>
+          <div className="flex gap-6 overflow-x-auto pb-4">
+            {recentListings.map((listing) => (
+              <div key={listing.id} className="flex-none w-64">
+                <ListingCard listing={listing} />
+              </div>
+            ))}
           </div>
-
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Fuerte &middot; 52 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Kericho County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 31 / kg</p>
-            </div>
-          </div>
-
-          <div className="bg-white">
-            <div className="bg-[#2d6a4f] h-32"></div>
-            <div className="p-4">
-              <p className="text-[#1c3d2e] font-bold text-sm">Hass &middot; 120 trees</p>
-              <p className="text-gray-500 text-xs mb-2">Bomet County</p>
-              <p className="text-[#1c3d2e] font-bold text-sm">KES 40 / kg</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="bg-[#d9a441] px-8 py-10 text-center">
         <h2 className="text-[#1c3d2e] text-xl font-bold mb-4">
@@ -148,7 +157,6 @@ function Home() {
       </section>
 
       <Footer />
-
     </div>
   )
 }
