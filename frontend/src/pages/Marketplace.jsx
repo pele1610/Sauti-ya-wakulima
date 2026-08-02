@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../components/layout/Navbar'
-import ListingCard from '../components/listings/ListingCard'
-import { getListings } from '../api/listings'
-import Pagination from '../components/ui/Pagination'
 import Footer from '../components/layout/Footer'
+import ListingCard from '../components/listings/ListingCard'
+import Pagination from '../components/ui/Pagination'
+import { getListings } from '../api/listings'
 
 function Marketplace() {
   const [listings, setListings] = useState([])
@@ -33,8 +33,8 @@ function Marketplace() {
     <div>
       <Navbar />
 
-      <div className="px-8 py-10">
-        <h1 className="text-[#1c3d2e] text-2xl font-bold mb-1">Marketplace</h1>
+      <div className="px-4 md:px-8 py-6 md:py-10">
+        <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-1">Marketplace</h1>
         <p className="text-gray-500 text-sm mb-8">
           Browse available avocado listings from farmers.
         </p>
@@ -44,16 +44,17 @@ function Marketplace() {
 
         {!loading && !error && (
           <>
-            <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {listings.map((listing) => (
                 <ListingCard key={listing.id} listing={listing} />
               ))}
             </div>
 
-           <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+            <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
           </>
         )}
       </div>
+
       <Footer />
     </div>
   )

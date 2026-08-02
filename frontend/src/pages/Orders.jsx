@@ -3,9 +3,8 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Badge from '../components/ui/Badge'
 import Pagination from '../components/ui/Pagination'
-import { getOrders } from '../api/orders'
+import { getOrders, updateOrder } from '../api/orders'
 import { useAuth } from '../context/AuthContext'
-import { updateOrder } from '../api/orders'
 
 const statusVariant = {
   pending: 'warning',
@@ -20,17 +19,6 @@ function Orders() {
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-
-  async function handleStatusChange(orderId, newStatus) {
-    try {
-      await updateOrder(orderId, { status: newStatus })
-      setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
-      )
-    } catch (err) {
-      setError(err.message)
-    }
-  }
 
   useEffect(() => {
     async function fetchOrders() {
@@ -49,12 +37,23 @@ function Orders() {
     fetchOrders()
   }, [page])
 
+  async function handleStatusChange(orderId, newStatus) {
+    try {
+      await updateOrder(orderId, { status: newStatus })
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+      )
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   return (
     <div>
       <Navbar />
 
-      <div className="px-8 py-10">
-        <h1 className="text-[#1c3d2e] text-2xl font-bold mb-1">
+      <div className="px-4 md:px-8 py-6 md:py-10">
+        <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-1">
           {user.role === 'farmer' ? 'Orders on your listings' : 'Your orders'}
         </h1>
         <p className="text-gray-500 text-sm mb-8">
@@ -75,7 +74,7 @@ function Orders() {
               {orders.map((order) => (
                 <div
                   key={order.id}
-                  className="flex justify-between items-center bg-white border p-4"
+                  className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white border p-4"
                 >
                   <div>
                     <p className="font-bold text-sm text-[#1c3d2e]">
@@ -89,7 +88,7 @@ function Orders() {
                     <select
                       value={order.status}
                       onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                      className="text-xs border rounded px-2 py-1"
+                      className="text-xs border rounded px-2 py-1 self-start sm:self-auto"
                     >
                       <option value="pending">pending</option>
                       <option value="confirmed">confirmed</option>

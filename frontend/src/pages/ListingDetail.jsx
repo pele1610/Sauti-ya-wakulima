@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
+import Footer from '../components/layout/Footer'
 import Badge from '../components/ui/Badge'
 import { getListing } from '../api/listings'
 import { createOrder } from '../api/orders'
 import { useAuth } from '../context/AuthContext'
-import Footer from '../components/layout/Footer'
 
 function ListingDetail() {
   const { id } = useParams()
@@ -63,17 +63,21 @@ function ListingDetail() {
     <div>
       <Navbar />
 
-      <div className="px-8 py-10 max-w-2xl">
+      <div className="px-4 md:px-8 py-6 md:py-10 max-w-2xl">
         {loading && <p className="text-gray-500 text-sm">Loading listing...</p>}
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
         {listing && (
           <>
-            <div className="bg-[#2d6a4f] h-48 mb-6"></div>
+            <div className="bg-[#2d6a4f] h-36 md:h-48 mb-6"></div>
 
-            <h1 className="text-[#1c3d2e] text-2xl font-bold mb-2">
+            <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-2">
               {listing.variety} &middot; {listing.tree_count} trees
             </h1>
+            <p className="text-gray-500 text-xs mb-2">
+              {listing.farmer_name || 'Unknown farmer'}
+              {listing.farmer_location && ` · ${listing.farmer_location}`}
+            </p>
             <Badge variant={listing.status === 'available' ? 'success' : 'danger'}>
               {listing.status}
             </Badge>
@@ -128,7 +132,7 @@ function ListingDetail() {
                   <button
                     type="submit"
                     disabled={orderLoading}
-                    className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-5 py-3 disabled:opacity-50"
+                    className="w-full sm:w-auto bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-5 py-3 disabled:opacity-50"
                   >
                     {orderLoading ? 'Placing order...' : 'Place order'}
                   </button>
@@ -152,7 +156,8 @@ function ListingDetail() {
           </>
         )}
       </div>
-        <Footer />
+
+      <Footer />
     </div>
   )
 }

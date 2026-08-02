@@ -68,15 +68,15 @@ function FarmerDashboard() {
     <div>
       <Navbar />
 
-      <div className="px-8 py-10">
-        <div className="flex justify-between items-center mb-8">
+      <div className="px-4 md:px-8 py-6 md:py-10">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
           <div>
-            <h1 className="text-[#1c3d2e] text-2xl font-bold mb-1">My Listings</h1>
+            <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-1">My Listings</h1>
             <p className="text-gray-500 text-sm">{listings.length} listing(s)</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-4 py-2"
+            className="bg-[#d9a441] text-[#1c3d2e] font-bold text-sm px-4 py-2 self-start"
           >
             {showForm ? 'Cancel' : 'Add Listing'}
           </button>
@@ -127,7 +127,7 @@ function FarmerDashboard() {
             {listings.map((listing) => (
               <div
                 key={listing.id}
-                className="flex justify-between items-center bg-white border p-4"
+                className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white border p-4"
               >
                 <div>
                   <p className="font-bold text-sm text-[#1c3d2e]">
