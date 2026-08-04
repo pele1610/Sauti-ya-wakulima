@@ -7,6 +7,7 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('buyer')
+  const [location, setLocation] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ function Register() {
     setError('')
     setLoading(true)
     try {
-      await register({ name, email, password, role })
+      await register({ name, email, password, role, location })
       navigate('/login')
     } catch (err) {
       setError(err.message)
@@ -56,6 +57,16 @@ function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Location</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="e.g. Nakuru, Kenya"
             className="w-full border rounded px-3 py-2"
           />
         </div>

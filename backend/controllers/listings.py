@@ -1,10 +1,10 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from schemas.listing_schema import listing_schema, listings_schema
 
 from app import db
 from models import Listing
+from schemas.listing_schema import listing_schema, listings_schema
 
 
 class ListingListResource(Resource):
@@ -34,14 +34,14 @@ class ListingListResource(Resource):
         listing = Listing(
             farmer_id=farmer_id,
             variety=data.get("variety"),
-            tree_count=data.get("tree_count"),
+            acreage=data.get("acreage"),
+            price_per_kg=data.get("price_per_kg"),
             status=data.get("status", "available"),
         )
         db.session.add(listing)
         db.session.commit()
 
         return listing_schema.dump(listing), 201
-
 
 
 class ListingResource(Resource):
@@ -62,7 +62,7 @@ class ListingResource(Resource):
             return {"error": "You can only edit your own listings"}, 403
 
         data = request.get_json()
-        for field in ["variety", "tree_count", "status"]:
+        for field in ["variety", "acreage", "price_per_kg", "status"]:
             if field in data:
                 setattr(listing, field, data[field])
 

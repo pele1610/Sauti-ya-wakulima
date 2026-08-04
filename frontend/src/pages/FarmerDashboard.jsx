@@ -13,7 +13,8 @@ function FarmerDashboard() {
 
   const [showForm, setShowForm] = useState(false)
   const [variety, setVariety] = useState('Hass')
-  const [treeCount, setTreeCount] = useState('')
+  const [acreage, setAcreage] = useState('')
+  const [pricePerKg, setPricePerKg] = useState('')
   const [formError, setFormError] = useState('')
   const [formLoading, setFormLoading] = useState(false)
 
@@ -42,10 +43,12 @@ function FarmerDashboard() {
     try {
       await createListing({
         variety,
-        tree_count: Number(treeCount),
+        acreage: Number(acreage),
+        price_per_kg: Number(pricePerKg),
         status: 'available',
       })
-      setTreeCount('')
+      setAcreage('')
+      setPricePerKg('')
       setShowForm(false)
       fetchMyListings()
     } catch (err) {
@@ -96,11 +99,23 @@ function FarmerDashboard() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Tree count</label>
+              <label className="block text-sm font-medium mb-1">Acreage</label>
               <input
                 type="number"
-                value={treeCount}
-                onChange={(e) => setTreeCount(e.target.value)}
+                step="0.1"
+                value={acreage}
+                onChange={(e) => setAcreage(e.target.value)}
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Price per kg (KES)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={pricePerKg}
+                onChange={(e) => setPricePerKg(e.target.value)}
                 required
                 className="w-full border rounded px-3 py-2"
               />
@@ -131,8 +146,9 @@ function FarmerDashboard() {
               >
                 <div>
                   <p className="font-bold text-sm text-[#1c3d2e]">
-                    {listing.variety} &middot; {listing.tree_count} trees
+                    {listing.variety} &middot; {listing.acreage} acres
                   </p>
+                  <p className="text-gray-500 text-xs">KES {listing.price_per_kg} / kg</p>
                 </div>
                 <div className="flex items-center gap-4">
                   <Badge variant={listing.status === 'available' ? 'success' : 'danger'}>

@@ -12,7 +12,7 @@ class OrderSchema(ma.SQLAlchemySchema):
     listing_id = ma.auto_field()
     price_agreed = ma.auto_field()
     harvest_date = ma.auto_field()
-    weight_recorded = ma.auto_field()
+    quantity_kg = ma.auto_field()
     status = ma.auto_field()
     listing = ma.Nested(ListingSchema)
 

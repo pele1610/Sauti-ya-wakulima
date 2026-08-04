@@ -12,7 +12,7 @@ class Order(db.Model, SerializerMixin):
     listing_id = db.Column(db.Integer, db.ForeignKey("listings.id"), nullable=False)
     price_agreed = db.Column(db.Float)
     harvest_date = db.Column(db.Date)
-    weight_recorded = db.Column(db.Float)
+    quantity_kg = db.Column(db.Float)
     status = db.Column(db.String, default="pending")
 
     buyer = db.relationship("User", back_populates="orders")

@@ -11,10 +11,10 @@ function OrderCard({ order }) {
     <div className="flex justify-between items-center bg-white border p-4">
       <div>
         <p className="font-bold text-sm text-[#1c3d2e]">
-          {order.listing?.variety} ({order.weight_recorded} kg)
+          {order.listing?.variety} &middot; {order.quantity_kg} kg
         </p>
         <p className="text-gray-500 text-xs">
-          KES {order.price_agreed} &nbsp;|&nbsp; Harvest: {order.harvest_date}
+          KES {order.price_agreed}/kg &nbsp;|&nbsp; Harvest: {order.harvest_date}
         </p>
       </div>
       <Badge variant={statusVariant[order.status] || 'default'}>

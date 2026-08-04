@@ -10,7 +10,8 @@ class Listing(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     farmer_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     variety = db.Column(db.String)
-    tree_count = db.Column(db.Integer)
+    acreage = db.Column(db.Float)
+    price_per_kg = db.Column(db.Float)
     status = db.Column(db.String, default="available")
 
     farmer = db.relationship("User", back_populates="listings")

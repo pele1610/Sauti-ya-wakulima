@@ -16,8 +16,7 @@ function ListingDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const [weight, setWeight] = useState('')
-  const [price, setPrice] = useState('')
+  const [offerPrice, setOfferPrice] = useState('')
   const [harvestDate, setHarvestDate] = useState('')
   const [orderError, setOrderError] = useState('')
   const [orderLoading, setOrderLoading] = useState(false)
@@ -30,6 +29,7 @@ function ListingDetail() {
       try {
         const data = await getListing(id)
         setListing(data)
+        setOfferPrice(data.price_per_kg)
       } catch (err) {
         setError(err.message)
       } finally {
@@ -46,9 +46,8 @@ function ListingDetail() {
     try {
       await createOrder({
         listing_id: Number(id),
-        price_agreed: Number(price),
+        price_agreed: Number(offerPrice),
         harvest_date: harvestDate,
-        weight_recorded: Number(weight),
         status: 'pending',
       })
       setOrderSuccess(true)
@@ -71,9 +70,12 @@ function ListingDetail() {
           <>
             <div className="bg-[#2d6a4f] h-36 md:h-48 mb-6"></div>
 
-            <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-2">
-              {listing.variety} &middot; {listing.tree_count} trees
+            <h1 className="text-[#1c3d2e] text-xl md:text-2xl font-bold mb-1">
+              {listing.variety} &middot; {listing.acreage} acres
             </h1>
+            <p className="text-gray-600 text-sm mb-2">
+              Asking price: KES {listing.price_per_kg} / kg
+            </p>
             <p className="text-gray-500 text-xs mb-2">
               {listing.farmer_name || 'Unknown farmer'}
               {listing.farmer_location && ` · ${listing.farmer_location}`}
@@ -97,23 +99,16 @@ function ListingDetail() {
 
               {isAuthenticated && user.role === 'buyer' && !orderSuccess && (
                 <form onSubmit={handleOrder} className="space-y-4">
-                  <h2 className="text-[#1c3d2e] font-bold text-sm">Place an order</h2>
+                  <h2 className="text-[#1c3d2e] font-bold text-sm">
+                    Place an order for the whole listing
+                  </h2>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Price agreed (KES)</label>
+                    <label className="block text-sm font-medium mb-1">Your offer (KES)</label>
                     <input
                       type="number"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      required
-                      className="w-full border rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Weight (kg)</label>
-                    <input
-                      type="number"
-                      value={weight}
-                      onChange={(e) => setWeight(e.target.value)}
+                      step="0.01"
+                      value={offerPrice}
+                      onChange={(e) => setOfferPrice(e.target.value)}
                       required
                       className="w-full border rounded px-3 py-2"
                     />

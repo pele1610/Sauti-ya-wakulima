@@ -1,10 +1,10 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from schemas.order_schema import order_schema, orders_schema
 
 from app import db
 from models import Order, Listing
+from schemas.order_schema import order_schema, orders_schema
 
 
 class OrderListResource(Resource):
@@ -50,7 +50,7 @@ class OrderListResource(Resource):
             listing_id=listing_id,
             price_agreed=data.get("price_agreed"),
             harvest_date=data.get("harvest_date"),
-            weight_recorded=data.get("weight_recorded"),
+            quantity_kg=data.get("quantity_kg"),
             status=data.get("status", "pending"),
         )
         db.session.add(order)
@@ -83,7 +83,7 @@ class OrderResource(Resource):
             return {"error": "You do not have permission to update this order"}, 403
 
         data = request.get_json()
-        for field in ["price_agreed", "harvest_date", "weight_recorded", "status"]:
+        for field in ["price_agreed", "harvest_date", "quantity_kg", "status"]:
             if field in data:
                 setattr(order, field, data[field])
 

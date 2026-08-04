@@ -2,11 +2,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
-from config import Config
 from flask_marshmallow import Marshmallow
+from config import Config
 
 ma = Marshmallow()
-
 db = SQLAlchemy()
 
 
@@ -22,7 +21,7 @@ def create_app():
 
     from flask_jwt_extended import JWTManager
     from flask_restful import Api
-    from controllers.auth import Register, Login, Protected, AdminOnly
+    from controllers.auth import Register, Login, Protected, AdminOnly, UserListResource
     from controllers.listings import ListingListResource, ListingResource
     from controllers.orders import OrderListResource, OrderResource
     from controllers.analytics import ListingsWithBuyerCount, AvgTreeCountByVariety, OrdersByStatusWithFarmer
@@ -34,6 +33,7 @@ def create_app():
     api.add_resource(Login, "/login")
     api.add_resource(Protected, "/protected")
     api.add_resource(AdminOnly, "/admin-only")
+    api.add_resource(UserListResource, "/users")
     api.add_resource(ListingListResource, "/listings")
     api.add_resource(ListingResource, "/listings/<int:listing_id>")
     api.add_resource(OrderListResource, "/orders")

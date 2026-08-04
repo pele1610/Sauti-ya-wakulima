@@ -9,7 +9,10 @@ function ListingCard({ listing }) {
       <div className="bg-[#2d6a4f] h-32"></div>
       <div className="p-4">
         <p className="text-[#1c3d2e] font-bold text-sm">
-          {listing.variety} &middot; {listing.tree_count} trees
+          {listing.variety} &middot; {listing.acreage} acres
+        </p>
+        <p className="text-gray-600 text-xs mt-1">
+          KES {listing.price_per_kg} / kg
         </p>
         <p className="text-gray-500 text-xs mt-1">
           {listing.farmer_name || 'Unknown farmer'}

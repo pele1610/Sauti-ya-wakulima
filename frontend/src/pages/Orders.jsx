@@ -77,12 +77,12 @@ function Orders() {
                   className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white border p-4"
                 >
                   <div>
-                    <p className="font-bold text-sm text-[#1c3d2e]">
-                      {order.listing?.variety} ({order.weight_recorded} kg)
-                    </p>
-                    <p className="text-gray-500 text-xs">
-                      KES {order.price_agreed} &nbsp;|&nbsp; Harvest: {order.harvest_date}
-                    </p>
+                 <p className="font-bold text-sm text-[#1c3d2e]">
+                 {order.listing?.variety}
+                 </p>
+                 <p className="text-gray-500 text-xs">
+                  Offer: KES {order.price_agreed} &nbsp;|&nbsp; Harvest: {order.harvest_date}
+                  </p>   
                   </div>
                   {user.role === 'farmer' ? (
                     <select

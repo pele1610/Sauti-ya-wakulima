@@ -2,17 +2,16 @@ from datetime import date
 import random
 from faker import Faker
 from werkzeug.security import generate_password_hash
-
 from app import create_app, db
 from models import User, Profile, Listing, Order
 
 fake = Faker()
 app = create_app()
+
 # my seed file
 VARIETIES = ["Hass", "Fuerte"]
 LISTING_STATUSES = ["available", "sold_out"]
 ORDER_STATUSES = ["pending", "confirmed", "completed"]
-
 
 with app.app_context():
     print("Clearing existing data...")
@@ -40,8 +39,6 @@ with app.app_context():
         )
         db.session.add(profile)
         farmers.append(user)
-
-
 
     print("Seeding buyers...")
     buyers = []
@@ -71,7 +68,6 @@ with app.app_context():
     db.session.add(admin)
     db.session.flush()
     db.session.add(Profile(user_id=admin.id, phone=fake.phone_number(), location=fake.city(), verification_status="verified"))
-
     db.session.commit()
 
     print("Seeding listings...")
@@ -80,12 +76,12 @@ with app.app_context():
         listing = Listing(
             farmer_id=random.choice(farmers).id,
             variety=random.choice(VARIETIES),
-            tree_count=random.randint(10, 100),
+            acreage=round(random.uniform(0.5, 10), 2),
+            price_per_kg=round(random.uniform(60, 90), 2),
             status=random.choice(LISTING_STATUSES),
         )
         db.session.add(listing)
         listings.append(listing)
-
     db.session.commit()
 
     print("Seeding orders...")
@@ -94,12 +90,12 @@ with app.app_context():
         order = Order(
             buyer_id=random.choice(buyers).id,
             listing_id=listing.id,
-            price_agreed=round(random.uniform(50, 500), 2),
+            price_agreed=round(random.uniform(60, 90), 2),
             harvest_date=fake.date_between(start_date="-30d", end_date="+30d"),
-            weight_recorded=round(random.uniform(20, 300), 2),
+            quantity_kg=round(random.uniform(20, 300), 2),
             status=random.choice(ORDER_STATUSES),
         )
         db.session.add(order)
-
     db.session.commit()
+
     print("Seeding complete!")

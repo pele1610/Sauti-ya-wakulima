@@ -2,7 +2,8 @@ import { useState } from 'react'
 
 function ListingForm({ onSubmit, onCancel }) {
   const [variety, setVariety] = useState('Hass')
-  const [treeCount, setTreeCount] = useState('')
+  const [acreage, setAcreage] = useState('')
+  const [pricePerKg, setPricePerKg] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -11,8 +12,14 @@ function ListingForm({ onSubmit, onCancel }) {
     setError('')
     setLoading(true)
     try {
-      await onSubmit({ variety, tree_count: Number(treeCount), status: 'available' })
-      setTreeCount('')
+      await onSubmit({
+        variety,
+        acreage: Number(acreage),
+        price_per_kg: Number(pricePerKg),
+        status: 'available',
+      })
+      setAcreage('')
+      setPricePerKg('')
     } catch (err) {
       setError(err.message)
     } finally {
@@ -34,11 +41,23 @@ function ListingForm({ onSubmit, onCancel }) {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">Tree count</label>
+        <label className="block text-sm font-medium mb-1">Acreage</label>
         <input
           type="number"
-          value={treeCount}
-          onChange={(e) => setTreeCount(e.target.value)}
+          step="0.01"
+          value={acreage}
+          onChange={(e) => setAcreage(e.target.value)}
+          required
+          className="w-full border rounded px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">Price per kg (KES)</label>
+        <input
+          type="number"
+          step="0.01"
+          value={pricePerKg}
+          onChange={(e) => setPricePerKg(e.target.value)}
           required
           className="w-full border rounded px-3 py-2"
         />

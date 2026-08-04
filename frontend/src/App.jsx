@@ -28,7 +28,7 @@ function App() {
             path="/protected-test"
             element={
               <ProtectedRoute>
-                <div className="p-6">You're authenticated 🎉</div>
+                <div className="p-6">You're authenticated </div>
               </ProtectedRoute>
             }
           />
